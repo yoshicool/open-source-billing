@@ -1,0 +1,26 @@
+version: "3.2"
+
+services:
+        database:
+                image: mysql
+                environment:
+                        - MYSQL_ALLOW_EMPTY_PASSWORD=1
+                restart: always
+        mail:
+                build:
+                        context: mail
+                restart: always
+        web:
+                build: 
+                        context: .
+                depends_on: 
+                        - database
+                links: 
+                        - database
+                        - mail
+                expose: 
+                        - 3000/tcp
+                ports:
+                        - "3000:3000"
+                restart: always
+
